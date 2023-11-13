@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="inherited_purchase_order_view_form" model="ir.ui.view">
+        <field name="name">purchase.order.view.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="currency_id" readonly="1" string="Company Currency"/>
+                <field name="apply_currency_exchange" attrs="{'readonly':[('state', '=', 'purchase')]}"/>
+                <field name="order_currency_id" attrs="{'invisible':[('apply_currency_exchange', '=', False)],'readonly':[('state', '=', 'purchase')],'required':[('apply_currency_exchange', '=', True)]}"/>
+                <field name="currency_exchange_rate" attrs="{'invisible':[('apply_currency_exchange', '=', False)],'readonly':[('state', '=', 'purchase')],'required':[('apply_currency_exchange', '=', True)]}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

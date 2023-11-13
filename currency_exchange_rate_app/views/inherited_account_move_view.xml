@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+	<record id="inherited_account_view_move_form_view_form" model="ir.ui.view">
+		<field name="name">account.move.view.form.inherit</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_move_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//div[@name='journal_div']/field[@name='currency_id']" position="attributes">
+				<attribute name="attrs">{'invisible': [('apply_currency_exchange', '=', True)]}</attribute>
+			</xpath>
+			<xpath expr="//div[@name='journal_div']/field[@name='currency_id']" position="after">
+				<field name="apply_currency_exchange" invisible="1"/>
+				<field name="order_currency_id" attrs="{'invisible':[('apply_currency_exchange', '=', False)],'required':[('apply_currency_exchange', '=', True)]}" />
+			</xpath>
+			<xpath expr="//div[@name='journal_div']" position="after">
+				<field name="apply_currency_exchange" attrs="{'readonly':[('state', '=', 'posted')]}"/>
+				<field name="company_currency_id" string="Company Currency" readonly="True" force_save="1"/>
+				<field name="order_currency_id" attrs="{'invisible':[('apply_currency_exchange', '=', False)],'readonly':[('state', '=', 'posted')],'required':[('apply_currency_exchange', '=', True)]}"/>
+				<field name="currency_exchange_rate" attrs="{'invisible':[('apply_currency_exchange', '=', False)],'readonly':[('state', '=', 'posted')],'required':[('apply_currency_exchange', '=', True)]}"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

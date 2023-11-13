@@ -1,0 +1,105 @@
+<!--<?xml version="1.0" ?>-->
+<odoo>
+    <data> 
+        <template id="payment_request_report_view">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                                <h2><span t-field="o.name"/></h2>
+                            <div class="row mt32 mb32">
+                                <div class="col-xs-3" t-if="o.requester_id">
+                                    <strong>Requester:</strong>
+                                    <p t-field="o.requester_id.name"/>
+                                </div>
+                                <div class="col-xs-3" t-if="o.employee_id">
+                                    <strong>Employee:</strong>
+                                    <p t-field="o.employee_id.name"/>
+                                </div>
+                                <div class="col-xs-3" t-if="o.date">
+                                    <strong>Request Date:</strong>
+                                    <p t-field="o.date" t-field-options='{"format": "dd-MM-yyyy"}'/>
+                                </div>
+                                <div class="col-xs-3" t-if="o.state">
+                                    <strong>Status:</strong>
+                                    <p t-field="o.state"/>
+                                </div>
+                            </div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th class="text-right">Requested Amount</th>
+                                        <th class="text-right">Approved Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.request_line" t-as="line">
+                                        <td><span t-field="line.name"/></td>
+                                        <td class="text-right">
+                                            <span t-field="line.request_amount" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.approved_amount" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-right">
+                                            <strong t-field="o.requested_amount" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <strong t-field="o.approved_amount" t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-condensed table-bordered  mt64 mb32">
+                                <thead>
+                                    <th>Approved By</th>
+                                    <th>Signature</th>
+                                    <th>Approve Date</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span>Department Manager - </span><span t-field="o.dept_manager_id.name"/>
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                            <p t-field="o.dept_manager_approve_date" t-field-options='{"format": "dd-MM-yyyy"}'/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.general_manager_id">
+                                        <td>
+                                            <span>General Manager - </span><span t-field="o.general_manager_id.name"/>
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                            <p t-field="o.gm_approve_date" t-field-options='{"format": "dd-MM-yyyy"}'/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.manging_director_id">
+                                        <td>
+                                            <span>Managing Director - </span><span t-field="o.manging_director_id.name"/>
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                            <p t-field="o.director_approve_date" t-field-options='{"format": "dd-MM-yyyy"}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

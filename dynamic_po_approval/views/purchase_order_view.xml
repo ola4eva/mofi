@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="inherit_purchase_order_form_view" model="ir.ui.view">
+		<field name="name">purchase.order.form</field>
+		<field name="model">purchase.order</field>
+		<field name="inherit_id" ref="purchase.purchase_order_form" />
+		<field name="arch" type="xml">
+			<header>
+				<button name="action_reject" type="object" attrs="{'invisible':['|', ('state', '!=', 'to approve'), ('can_user_approve_order','=', False)]}" string="Reject Order" class="btn-danger"/>
+			</header>
+			<button name="button_cancel" position="attributes">
+				<attribute name="states">draft,sent,purchase</attribute>
+			</button>
+			<button name="button_approve" position="replace">
+				<button name="do_purchase_approve" type="object" attrs="{'invisible':[('can_user_approve_order','=',False)]}"
+					string="Approve Order" class="oe_highlight"/>
+			</button>
+			<button name="do_purchase_approve" position="after">
+				<button name="action_rfq_send" attrs="{'invisible':[('can_user_approve_order','=',False)]}" 
+					string="Send by Email" type="object" context="{'send_rfq':True}"/>
+				<button name="button_cancel" string="Cancel" type="object"
+					attrs="{'invisible':[('can_user_approve_order','=',False)]}"/>
+			</button>
+			<field name="company_id" position="after">
+				<field name="next_approved_by_user" widget="many2many_tags" invisible="1"/>
+				<field name="next_approved_by_group" invisible="1"/>
+				<field name="next_approval_line_id" invisible="1"/>
+				<field name="can_user_approve_order" invisible="1"/>
+			</field>
+			<field name="partner_ref" position="after">
+				<field name="reject_user_id" attrs="{'invisible': [('reject_user_id', '=', False)]}" />
+			</field>
+		</field>
+	</record>
+
+</odoo>

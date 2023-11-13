@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="payment_request_reg" model="ir.actions.report">
+            <field name="name">Payment made by Account</field>
+            <field name="report_name">ng_payment_request.payment_request_report_view</field>
+            <field name="report_file">ng_payment_request.payment_request_report_view</field>
+            <field name="model">payment.requisition</field>
+            <field name="report_type">qweb-pdf</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="payment_requisition_category" model="ir.module.category">
+            <field name="name">Cash Requisition</field>
+            <field name="sequence" eval="1"/>
+        </record>
+
+        <record id="group_user" context="{'noadmin':True}" model="res.groups">
+            <field name="name">User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="category_id" ref="payment_requisition_category" />
+            <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        </record>
+
+        <record id="group_supervisor" context="{'noadmin':True}" model="res.groups">
+            <field name="name">Supervisor</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="category_id" ref="payment_requisition_category" />
+            <field name="users" eval="[(4, ref('base.user_admin'))]" />
+        </record>
+
+        <record id="group_department_manager" context="{'noadmin':True}" model="res.groups">
+            <field name="name">Department Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="users" eval="[(4, ref('base.user_admin'))]" />
+            <field name="category_id" ref="payment_requisition_category" />
+        </record>
+
+        <record id="group_financial_controller" context="{'noadmin':True}" model="res.groups">
+            <field name="name">Financial Controller</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="users" eval="[(4, ref('base.user_admin'))]" />
+            <field name="category_id" ref="payment_requisition_category" />
+        </record>
+
+        <record id="inter_company_user" context="{'noadmin':True}" model="res.groups">
+            <field name="name">Inter-Company Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="users" eval="[(4, ref('base.user_admin'))]" />
+            <field name="category_id" ref="payment_requisition_category" />
+        </record>
+
+        <!--  Security Rules -->
+        <record id="property_rule_pr_employees" model="ir.rule">
+            <field name="name">Cash Requisition - Employee</field>
+            <field name="model_id" ref="model_payment_requisition" />
+            <field name="domain_force">[('employee_id.user_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('group_user'))]" />
+        </record>
+
+        <record id="property_rule_pr_supervisor" model="ir.rule">
+            <field name="name">Cash Requisition - Supervisor</field>
+            <field name="model_id" ref="model_payment_requisition" />
+            <field name="domain_force">['|', ('employee_id.user_id.id','=',user.id), ('employee_id.coach_id.user_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('group_supervisor'))]" />
+        </record>
+
+        <record id="property_rule_pr_department_manager" model="ir.rule">
+            <field name="name">Cash Requisition - Department Manager</field>
+            <field name="model_id" ref="model_payment_requisition" />
+            <field name="domain_force">[('department_id.manager_id.user_id.id','=',user.id)]</field>
+            <field name="groups" eval=" [(4,ref('group_department_manager'))]" />
+        </record>
+
+        <record id="property_rule_intercompany_user" model="ir.rule">
+            <field name="name">Inter-company User: User able to work across companies</field>
+            <field name="model_id" ref="model_payment_requisition" />
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4,ref('inter_company_user'))]" />
+        </record>
+
+        <record id="property_rule_pr_financial_controller" model="ir.rule">
+            <field name="name">Cash Requisition - Financial Controller</field>
+            <field name="model_id" ref="model_payment_requisition" />
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval=" [(4,ref('group_financial_controller'))]" />
+        </record>
+
+        <record id="requisition_multi_company_manager_rule" model="ir.rule">
+            <field name="name">Inter-company Global Access</field>
+            <field ref="model_payment_requisition" name="model_id"/>
+            <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="global" eval="1"/>
+        </record>
+
+    </data>
+</odoo>

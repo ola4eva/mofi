@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="group_credit_limit_customer" model="res.groups">
+	        <field name="name">Manage Credit Limit</field>
+	</record>
+</odoo>
